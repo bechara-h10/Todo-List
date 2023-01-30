@@ -1,0 +1,103 @@
+*,*::before,*::after{
+  box-sizing: border-box;
+}
+
+body{
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1{
+  margin: 0;
+}
+
+header{
+  background-color: #252525;
+  color:white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+}
+
+nav{
+  background-color: #252525;
+  width: 15%;
+  height: calc(100vh - 80px);
+  color: white;
+}
+
+main{
+  display: flex;
+}
+
+.todo-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 200ms ease-in-out;
+}
+
+.project-logo{
+  margin-right: 10px;
+}
+
+.add-project-button,.add-todo-button{ 
+  color: white;
+  background-color: #252525;
+  border: none;
+  padding: 5px 30px;
+  transition: background-color 150ms ease-in-out;
+}
+
+.add-todo-button{
+  background-color: white;
+  color: #252525;
+}
+
+.add-project-button:hover,.project-container:hover,.add-todo-button:hover{
+  background-color: #AAA;
+  cursor: pointer;
+}
+
+.add-project-container,
+.add-todo-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.buttons-container{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.add-button{
+  background-color: rgb(54, 239, 54);
+}
+
+.cancel-button{
+  background-color: rgb(221, 27, 27);
+}
+
+.add-button,
+.cancel-button{
+  margin-top: 5px;
+  border: none;
+  border-radius: 2px;
+  padding:5px 20px;
+  cursor: pointer;
+}
+
+.add-button:hover,
+.cancel-button:hover{
+  opacity: .6;
+}
