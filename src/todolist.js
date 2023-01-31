@@ -1,10 +1,14 @@
 import { format,compareAsc} from "date-fns"
 import Project from "./project"
+import Todo from "./todo"
+import Dom from "./dom"
 
 class TodoList {
   constructor(){
     this.projects = []
     this.projects.push(new Project('Inbox'))
+    this.projects.push(new Project('Today'))
+    this.projects.push(new Project('This Week'))
   }
 
   getProjects(){
@@ -36,41 +40,27 @@ class TodoList {
     this.projects = projects
   }
 
-  addToTodayAndThisWeek(){
+  addToToday(){
     const todayProject = this.getProject('Today')
-    const thisWeekProject = this.getProject('This Week')
     this.projects.forEach(project => {
       project.todos.forEach(todo => {
-        console.log(format(new Date(),'yyyy-MM-dd'))
         if(todo.dueDate == format(new Date(),'yyyy-MM-dd')){
-          todayProject.addTodo(todo.title)
-          const todayTodo = todayProject.getTodo(todo.title)
-          todayTodo.dueDate = todo.dueDate
           console.log(todayProject)
-        } else if(TodoList.isDateInThisWeek(todo.dueDate)){
-          thisWeekProject.addTodo(todo.title)
-          const thisWeekTodo = thisWeekProject.getTodo(todo.title)
-          thisWeekTodo.dueDate = todo.dueDate
-          console.log(thisWeekProject)
+          todayProject.addFullTodo(todo.title,todo.dueDate)
         }
       })
     })
   }
 
-   static isDateInThisWeek(date) {
-    const todayObj = new Date();
-    const todayDate = todayObj.getDate();
-    const todayDay = todayObj.getDay();
-  
-    // get first date of week
-    const firstDayOfWeek = new Date(todayObj.setDate(todayDate - todayDay));
-  
-    // get last date of week
-    const lastDayOfWeek = new Date(firstDayOfWeek);
-    lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
-  
-    // if date is equal or within the first and last dates of the week
-    return date >= firstDayOfWeek && date <= lastDayOfWeek;
+  addToThisWeek(){
+    const thisWeekProject = this.getProject('This Week')
+    this.projects.forEach(project => {
+      project.todos.forEach(todo => {
+        if(Dom.isDateInThisWeek(todo.dueDate)){
+          thisWeekProject.addFullTodo(todo.title,todo.dueDate)
+        }
+      })
+    })
   }
 
 }

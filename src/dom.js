@@ -2,6 +2,7 @@ import TodoList from "./todolist"
 import Project from "./project"
 import Todo from "./todo"
 import Storage from "./storage"
+import { format } from "date-fns"
 let switcher = 0
 let currentProject;
 
@@ -29,7 +30,20 @@ class Dom{
         inboxProjectDiv.appendChild(projectLogo)
         inboxProjectDiv.appendChild(projectTitle)
         inboxProjectDiv.classList.add('project-container')
-      } else {
+      } else if(project.title == 'Today'){
+        projectLogo.innerHTML = `<i class="fa-solid fa-calendar-day"></i> `
+        projectTitle.innerText = project.title
+        todayProjectDiv.appendChild(projectLogo)
+        todayProjectDiv.appendChild(projectTitle)
+        todayProjectDiv.classList.add('project-container')
+      } else if(project.title == 'This Week'){
+        projectLogo.innerHTML = `<i class="fa-solid fa-calendar-week"></i>`
+        projectTitle.innerText = project.title
+        thisWeekProjectDiv.appendChild(projectLogo)
+        thisWeekProjectDiv.appendChild(projectTitle)
+        thisWeekProjectDiv.classList.add('project-container')
+      }
+      else {
         projectLogo.innerHTML = `<i class="fa-solid fa-list-check"></i>`
         const projectDiv = document.createElement('div')
         projectDiv.classList.add('project-container')
@@ -51,7 +65,6 @@ class Dom{
       console.log(currentProject)
     })
     this.addProjectOption(todoList)
-    todoList.addToTodayAndThisWeek()
     Storage.saveTodoList(todoList)
   }
 
@@ -144,7 +157,7 @@ class Dom{
     buttonsContainer.appendChild(cancelButton)
     cancelButton.onclick = () => {
       if(switcher == 1){
-      Dom.addProjectOption(todoList)
+        Dom.addProjectOption(todoList)
       } else {
         Dom.addTodoOption(todoList)
       }
@@ -152,10 +165,10 @@ class Dom{
     addButton.onclick = () => {
       if(switcher == 1){
       todoList.addProject(input.value)
-      this.showProjects(todoList)
+        Dom.showProjects(todoList)
       } else {
         todoList.addTodo(currentProject,input.value)
-        this.showProjectContent(todoList,currentProject)
+        Dom.showProjectContent(todoList,currentProject)
       }
     }
     element.innerText = ''
@@ -184,6 +197,7 @@ class Dom{
     }
     Storage.saveTodoList(todoList)
   }
+
   static displayDateChangeInput(todoList,element,todoTitle){
     const project = todoList.getProject(currentProject)
     const todo = project.getTodo(todoTitle)
@@ -195,14 +209,33 @@ class Dom{
     document.onkeydown = (e) => {
       if(e.key == 'Enter'){
         todo.dueDate = input.value
-        todoList.addToTodayAndThisWeek()
         this.showProjectContent(todoList,currentProject)
+        
       }
     }
     Storage.saveTodoList(todoList)
   }
+
+  static isToday(date){
+    return date == format(new Date(),'yyyy-MM-dd')
+  }
+
+  static isDateInThisWeek(date) {
+    const todayObj = new Date();
+    const todayDate = todayObj.getDate();
+    const todayDay = todayObj.getDay();
+  
+    // get first date of week
+    const firstDayOfWeek = new Date(todayObj.setDate(todayDate - todayDay));
+  
+    // get last date of week
+    const lastDayOfWeek = new Date(firstDayOfWeek);
+    lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
+  
+    // if date is equal or within the first and last dates of the week
+    return date >= firstDayOfWeek && date <= lastDayOfWeek;
+  }
   
 }
-
 
 export default Dom

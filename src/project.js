@@ -10,6 +10,10 @@ class Project{
     this.todos.push(new Todo(todoTitle))
   }
 
+  addFullTodo(todoTitle,todoDueDate){
+    this.todos.push(new Todo(todoTitle,todoDueDate))
+  }
+
   deleteTodo(todoTitle){
     this.todos = this.todos.filter(todo => todo.title != todoTitle)
   }
