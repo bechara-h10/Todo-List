@@ -1,7 +1,7 @@
 import Todo from "./todo"
 
 class Project{
-  constructor(title){
+  constructor(title=''){
     this.title = title
     this.todos=[]
   }
@@ -16,6 +16,19 @@ class Project{
 
   setTitle(title){
     this.title = title
+  }
+
+  getTodo(todoTitle){
+    const result = this.todos.filter(todo => todo.title == todoTitle ? todo : null)
+    return result[0]
+  }
+  
+  getTodos(){
+    return this.todos
+  }
+  
+  setTodos(todos){
+    this.todo = todos
   }
 }
 

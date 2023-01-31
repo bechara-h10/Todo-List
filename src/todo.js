@@ -1,5 +1,7 @@
+import {format, compareAsc} from 'date-fns'
+
 class Todo {
-  constructor(title,dueDate=new Date()){
+  constructor(title = '',dueDate = ''){
     this.title = title
     this.dueDate = dueDate
   }

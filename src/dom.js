@@ -1,7 +1,7 @@
 import TodoList from "./todolist"
 import Project from "./project"
 import Todo from "./todo"
-
+import Storage from "./storage"
 let switcher = 0
 let currentProject;
 
@@ -9,17 +9,26 @@ class Dom{
   static showProjects(todoList){
     const projectsDiv = document.querySelector('.projects-container')
     const defaultProjectDiv = document.querySelector('.default-project-container')
-    defaultProjectDiv.innerText = ''
+    const inboxProjectDiv = defaultProjectDiv.querySelector('.inbox-container')
+    const todayProjectDiv = defaultProjectDiv.querySelector('.today-container')
+    const thisWeekProjectDiv = defaultProjectDiv.querySelector('.this-week-container')
     projectsDiv.innerText = ''
+    inboxProjectDiv.innerText = ''
+    todayProjectDiv.innerText = ''
+    thisWeekProjectDiv.innerText = ''
     todoList.projects.forEach(project => {
       const projectTitle = document.createElement('h3')
       const projectLogo = document.createElement('div')
       projectLogo.classList.add('project-logo')
-      if(project.title == 'Inbox' ){
+      const xLogo = document.createElement('p')
+      xLogo.innerHTML = ' <i class="fa-solid fa-xmark"></i>'
+      xLogo.classList.add('logo-x')
+      if(project.title == 'Inbox'){
         projectLogo.innerHTML = `<i class="fa-solid fa-inbox"></i>`
         projectTitle.innerText = project.title
-        defaultProjectDiv.appendChild(projectLogo)
-        defaultProjectDiv.appendChild(projectTitle)
+        inboxProjectDiv.appendChild(projectLogo)
+        inboxProjectDiv.appendChild(projectTitle)
+        inboxProjectDiv.classList.add('project-container')
       } else {
         projectLogo.innerHTML = `<i class="fa-solid fa-list-check"></i>`
         const projectDiv = document.createElement('div')
@@ -27,7 +36,12 @@ class Dom{
         projectTitle.innerText = project.title 
         projectDiv.appendChild(projectLogo)
         projectDiv.appendChild(projectTitle)
+        projectDiv.appendChild(xLogo)
         projectsDiv.appendChild(projectDiv)
+        xLogo.onclick = () => {
+          todoList.deleteProject(project.title)
+          this.showProjects(todoList)
+        }
       }
     })
     const projects = document.querySelectorAll('.project-container')
@@ -37,10 +51,12 @@ class Dom{
       console.log(currentProject)
     })
     this.addProjectOption(todoList)
+    todoList.addToTodayAndThisWeek()
+    Storage.saveTodoList(todoList)
   }
 
   static showProjectContent(todoList,projectTitle){
-    const project = todoList.getProject(projectTitle)[0]
+    const project = todoList.getProject(projectTitle)
     const projectTitleDiv = document.querySelector('.project-title')
     const todosDiv = document.querySelector('.todos-container')
     projectTitleDiv.innerText = project.title
@@ -49,20 +65,37 @@ class Dom{
       const todoButton = document.createElement('button')
       const leftPart = document.createElement('div')
       const rightPart = document.createElement('div')
-      const todoTitle = document.createElement('p')
+      const todoTitle = document.createElement('h3')
       const todoDueDate = document.createElement('p')
+      const xLogo = document.createElement('p')
+      xLogo.innerHTML = '<i class="fa-solid fa-xmark"></i>'
+      xLogo.classList.add('logo-x')
       todoTitle.innerText = todo.title
-      todoDueDate.innerText = todo.dueDate
+      todo.dueDate == '' ? todoDueDate.innerText = 'No Date' : todoDueDate.innerText = todo.dueDate
+      xLogo.onclick = () => {
+        todoList.deleteTodo(currentProject,todo.title)
+        this.showProjectContent(todoList,projectTitle)
+      }
       todoButton.classList.add('todo-button')
       leftPart.classList.add('left-part-todo')
       rightPart.classList.add('right-part-todo')
       leftPart.appendChild(todoTitle)
       rightPart.appendChild(todoDueDate)
+      rightPart.appendChild(xLogo)
       todoButton.appendChild(leftPart)
       todoButton.appendChild(rightPart)
       todosDiv.appendChild(todoButton)
-    })
+      todoTitle.onclick = () => {
+          this.displayTitleChangeInput(todoList,leftPart)
+          todoTitle.onclick = () => null
+        }
+      todoDueDate.onclick = () => {
+        this.displayDateChangeInput(todoList,todoDueDate,todo.title)
+        todoDueDate.onclick = () => null
+      }
+      })
     this.addTodoOption(todoList)
+    Storage.saveTodoList(todoList)
   }
 
   static addProjectOption(todoList){
@@ -92,6 +125,7 @@ class Dom{
       switcher = 0
       Dom.displayInputOption(todoList,addTodoDiv)
     }
+    Storage.saveTodoList(todoList)
   }
 
   static displayInputOption(todoList,element){
@@ -127,7 +161,48 @@ class Dom{
     element.innerText = ''
     element.appendChild(input)
     element.appendChild(buttonsContainer)
+    Storage.saveTodoList(todoList)
   }
+  static displayTitleChangeInput(todoList,element){
+    const title = element.querySelector('h3')
+    const titleValue = title.innerText
+    const project = todoList.getProject(currentProject)
+    const todo = project.getTodo(titleValue)
+    const input = document.createElement('input')
+    input.type = 'text'
+    input.id = 'title-change'
+    input.value = titleValue
+    title.innerText = ''
+    title.appendChild(input)
+    document.onkeydown = (e) => {
+      if(e.key == 'Enter'){
+        title.innerText = input.value
+        todo.title = title.innerText
+        input.remove()
+        this.showProjectContent(todoList,currentProject)
+      }
+    }
+    Storage.saveTodoList(todoList)
+  }
+  static displayDateChangeInput(todoList,element,todoTitle){
+    const project = todoList.getProject(currentProject)
+    const todo = project.getTodo(todoTitle)
+    const input = document.createElement('input')
+    input.type = 'date'
+    input.id = 'due-date'
+    element.innerText = ''
+    element.appendChild(input)
+    document.onkeydown = (e) => {
+      if(e.key == 'Enter'){
+        todo.dueDate = input.value
+        todoList.addToTodayAndThisWeek()
+        this.showProjectContent(todoList,currentProject)
+      }
+    }
+    Storage.saveTodoList(todoList)
+  }
+  
 }
+
 
 export default Dom
