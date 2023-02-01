@@ -40,26 +40,39 @@ class TodoList {
     this.projects = projects
   }
 
-  addToToday(){
+  addToToday(todo){
     const todayProject = this.getProject('Today')
-    this.projects.forEach(project => {
-      project.todos.forEach(todo => {
-        if(todo.dueDate == format(new Date(),'yyyy-MM-dd')){
-          console.log(todayProject)
-          todayProject.addFullTodo(todo.title,todo.dueDate)
-        }
-      })
+    if(todo.dueDate == format(new Date(),'yyyy-MM-dd')){
+      todayProject.addFullTodo(todo.title,todo.dueDate)
+    } else {
+      todayProject.deleteTodo(todo.title)
+    }
+  }
+
+  addToThisWeek(todo){
+    const thisWeekProject = this.getProject('This Week')
+    if(Dom.isDateInThisWeek(todo.dueDate)){
+      thisWeekProject.addFullTodo(todo.title,todo.dueDate)
+    } else {
+      thisWeekProject.deleteTodo(todo.title)
+    }
+  }
+
+  checkToday(){
+    const todayProject = this.getProject('Today')
+    todayProject.todos.forEach(todo => {
+      if(todo.dueDate != format(new Date(),'yyyy-MM-dd')){
+        todayProject.deleteTodo(todo.title)
+      }
     })
   }
 
-  addToThisWeek(){
+  checkThisWeek(){
     const thisWeekProject = this.getProject('This Week')
-    this.projects.forEach(project => {
-      project.todos.forEach(todo => {
-        if(Dom.isDateInThisWeek(todo.dueDate)){
-          thisWeekProject.addFullTodo(todo.title,todo.dueDate)
-        }
-      })
+    thisWeekProject.todos.forEach(todo => {
+      if(!Dom.isDateInThisWeek(todo.dueDate)){
+        thisWeekProject.deleteTodo(todo.title)
+      }
     })
   }
 

@@ -209,6 +209,8 @@ class Dom{
     document.onkeydown = (e) => {
       if(e.key == 'Enter'){
         todo.dueDate = input.value
+        todoList.addToToday(todo)
+        todoList.addToThisWeek(todo)
         this.showProjectContent(todoList,currentProject)
         
       }
@@ -233,7 +235,7 @@ class Dom{
     lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
   
     // if date is equal or within the first and last dates of the week
-    return date >= firstDayOfWeek && date <= lastDayOfWeek;
+    return date >= format(firstDayOfWeek,'yyyy-MM-dd') && date <= format(lastDayOfWeek,'yyyy-MM-dd');
   }
   
 }

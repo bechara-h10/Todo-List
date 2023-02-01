@@ -6,6 +6,8 @@ import Dom from './dom'
 import Storage from './storage'
 
 const todoList = Storage.getTodoList()
+todoList.checkToday()
+todoList.checkThisWeek()
 Dom.showProjects(todoList)
 
 
