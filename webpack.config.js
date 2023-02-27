@@ -13,10 +13,6 @@ module.exports = {
     assetModuleFilename: '[name][ext]',
   },
   devtool: 'inline-source-map',
-  script: {
-    predeploy: 'npm run build',
-    deploy: 'gh-pages -d dist',
-  },
   devServer: {
     static: path.resolve(__dirname, 'dist'),
     port: 5001,
