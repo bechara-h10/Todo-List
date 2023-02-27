@@ -184,6 +184,7 @@ class Dom {
     element.appendChild(buttonsContainer)
     Storage.saveTodoList(todoList)
   }
+
   static displayTitleChangeInput(todoList, element) {
     const title = element.querySelector('h3')
     const titleValue = title.innerText
@@ -202,6 +203,13 @@ class Dom {
         input.remove()
         this.showProjectContent(todoList, currentProject)
       }
+    }
+
+    input.onblur = () => {
+      title.innerText = input.value
+      todo.title = title.innerText
+      input.remove()
+      this.showProjectContent(todoList, currentProject)
     }
     Storage.saveTodoList(todoList)
   }
