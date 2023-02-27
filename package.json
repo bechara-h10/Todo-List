@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bechara-h10/Todo-List.git"
+    "url": "git+https://github.com/bechara-h10/bechara-h10.github.io.git"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,7 @@
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.3",
     "date-fns": "^2.29.3",
+    "gh-pages": "^5.0.0",
     "html-webpack-plugin": "^5.5.0",
     "style-loader": "^3.3.1",
     "webpack": "^5.75.0",

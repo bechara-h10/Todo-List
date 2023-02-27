@@ -7,12 +7,14 @@ module.exports = {
     main: path.resolve(__dirname, 'src/index.js'),
   },
   output: {
-    path: path.resolve(__dirname, 'dist/index.html'),
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
     clean: true,
     assetModuleFilename: '[name][ext]',
   },
   devtool: 'inline-source-map',
+  predeploy: 'npm run build',
+  deploy: 'gh-pages -d dist',
   devServer: {
     static: path.resolve(__dirname, 'dist'),
     port: 5001,
