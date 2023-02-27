@@ -1,51 +1,63 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Raleway:wght@400;600;700&display=swap');
 
-*,*::before,*::after{
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-body{
+body {
   margin: 0;
-  font-family: "Raleway",Arial;
+  font-family: 'Raleway', Arial;
 }
 
-h1{
+h1 {
   margin: 0;
 }
 
-#content{
+#content {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-left: 30px;
+  transition: transform 300ms ease-in-out;
 }
 
-header{
+header {
   background-color: #252525;
-  color:white;
+  color: white;
   display: flex;
   align-items: center;
   height: 80px;
-  padding-left: 85%;
+  width: 100%;
 }
 
-.site-logo{
+.site-info {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.site-logo {
   display: flex;
   justify-content: center;
   align-items: center;
+  justify-self: flex-end;
   font-size: 30px;
   margin-left: 10px;
 }
 
-nav{
+nav {
+  margin: 0;
   background-color: #252525;
-  width: 15%;
+  width: 150px;
   height: calc(100vh - 80px);
   color: white;
+  transition: transform 300ms ease-in-out;
 }
 
-main{
+main {
   display: flex;
 }
 
@@ -60,11 +72,11 @@ main{
   transition: background-color 200ms ease-in-out;
 }
 
-.todo-button:hover{
-  background-color: #AAA;
+.todo-button:hover {
+  background-color: #aaa;
 }
 
-.todos-container{
+.todos-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -77,11 +89,12 @@ main{
   transition: background-color 200ms ease-in-out;
 }
 
-.project-logo{
+.project-logo {
   margin-right: 10px;
 }
 
-.add-project-button,.add-todo-button{ 
+.add-project-button,
+.add-todo-button {
   color: white;
   background-color: #252525;
   border: none;
@@ -90,56 +103,58 @@ main{
   border-radius: 2px;
 }
 
-.add-todo-button{
+.add-todo-button {
   background-color: white;
   color: #252525;
 }
 
-.add-project-button:hover,.project-container:hover,.add-todo-button:hover{
-  background-color: #AAA;
+.add-project-button:hover,
+.project-container:hover,
+.add-todo-button:hover {
+  background-color: #aaa;
   cursor: pointer;
 }
 
 .add-project-container,
-.add-todo-container{
+.add-todo-container {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-.buttons-container{
+.buttons-container {
   width: 100%;
   display: flex;
-  justify-content:space-evenly;
+  justify-content: space-evenly;
 }
 
-.add-button{
+.add-button {
   background-color: rgb(54, 239, 54);
 }
 
-.cancel-button{
+.cancel-button {
   background-color: rgb(221, 27, 27);
 }
 
 .add-button,
-.cancel-button{
+.cancel-button {
   margin-top: 5px;
   border: none;
   border-radius: 2px;
-  padding:5px 20px;
+  padding: 5px 20px;
   cursor: pointer;
 }
 
 .add-button:hover,
-.cancel-button:hover{
-  opacity: .6;
+.cancel-button:hover {
+  opacity: 0.6;
 }
 
-.default-project-container{
+.default-project-container {
   display: flex;
   flex-direction: column;
-  border-bottom: solid 1px #FFF;
+  border-bottom: solid 1px #fff;
 }
 
 .add-project-container > #add {
@@ -150,19 +165,23 @@ main{
   font-size: 20px;
 }
 
-.logo-x{
-  cursor: pointer;  
+.add-project-container #add {
+  width: 100%;
+}
+
+.logo-x {
+  cursor: pointer;
   transition: scale 200ms ease-in-out;
 }
 
-.logo-x:hover{
+.logo-x:hover {
   scale: 1.2;
 }
 
 .left-part-todo,
-.right-part-todo{
+.right-part-todo {
   display: flex;
-  gap:5px;
+  gap: 5px;
   cursor: pointer;
   justify-content: center;
   align-items: center;
@@ -170,10 +189,46 @@ main{
 
 .inbox-container,
 .today-container,
-.this-week-container{
+.this-week-container {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.nav-bar-show {
+  width: 50px;
+  height: 50px;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  font-size: 30px;
+  margin-left: 45px;
+  display: none;
+  cursor: pointer;
+}
+
+@media (width <=600px) {
+  .nav-bar-show {
+    display: block;
+  }
+
+  nav {
+    transform: translateX(-100%);
+  }
+
+  #content {
+    margin-left: 0px;
+    transform: translateX(-100px);
+  }
+
+  nav.show {
+    transform: translateX(0);
+  }
+
+  nav.show + #content {
+    margin-left: 30px;
+    transform: translateX(0);
+  }
 }
 
 /* DARK THEME */
